@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# check_logs.sh - Проверка логов и отправка отчета
+
+cd /home/yourusername/anon_bot
+
+LOG_REPORT="/tmp/bot_log_report.txt"
+
+echo "📊 Отчет по логам бота - $(date)" > $LOG_REPORT
+echo "=================================" >> $LOG_REPORT
+
+# Проверяем ошибки за последние 24 часа
+echo "🚨 Ошибки за последние 24 часа:" >> $LOG_REPORT
+grep -i "error\|critical\|exception" logs/bot.log | tail -20 >> $LOG_REPORT
+
+echo "" >> $LOG_REPORT
+echo "📈 Статистика перезапусков:" >> $LOG_REPORT
+grep -c "Bot started" logs/monitor.log >> $LOG_REPORT
+
+echo "" >> $LOG_REPORT
+echo "💾 Размеры логов:" >> $LOG_REPORT
+ls -lh logs/*.log >> $LOG_REPORT
+
+echo "✅ Log check completed at $(date)" >> $LOG_REPORT
