@@ -10,8 +10,8 @@ from app.database import DATA_DIR  # Импортируем DATA_DIR из databa
 
 class BackupService:
     def __init__(self):
-        self.backup_dir = os.path.join(os.path.dirname(__file__), '..', 'backups')
-        os.makedirs(self.backup_dir, exist_ok=True)
+    self.backup_dir = "/app/backups"  # Абсолютный путь в контейнере
+    self.db_path = "/app/data/bot.db"
 
         # Используем путь из database.py
         self.db_path = os.path.join(DATA_DIR, 'bot.db')
