@@ -5,6 +5,28 @@ import os
 import logging
 from datetime import datetime
 
+
+from aiohttp import web
+import threading
+
+# Health check сервер для Koyeb
+def start_health_server():
+    async def health_check(request):
+        return web.Response(text="OK")
+    
+    app = web.Application()
+    app.router.add_get('/health', health_check)
+    
+    # Запускаем на порту 8080
+    web.run_app(app, port=8080, host='0.0.0.0')
+
+# Запуск health сервера в фоновом потоке
+print("🔄 Starting health server...")
+health_thread = threading.Thread(target=start_health_server, daemon=True)
+health_thread.start()
+print("✅ Health server started on port 8080")
+
+
 # Добавляем путь к проекту
 sys.path.append(os.path.dirname(__file__))
 
